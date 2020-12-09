@@ -22,12 +22,12 @@ namespace Lab09
 
         public void deleteFromPrezentyList(int number)
         {
-            if(number > 0 && number < prezenty.Count)
+            if(number > 0 && number <= prezenty.Count)
                 prezenty.RemoveAt(number - 1);
             else Console.WriteLine("Wrong input");
         }
 
-        public void showPrezentyList()
+        public void showListDoMikolaja()
         {
             Console.WriteLine("\nDo: Swiety Mikolaj");
             Console.WriteLine("Laponia");
@@ -37,6 +37,11 @@ namespace Lab09
 
             Console.WriteLine("\n" + list);
 
+            showListaPrezentow();
+        }
+
+        public void showListaPrezentow()
+        {
             int count = 0;
             foreach (string prezent in prezenty)
             {
@@ -72,14 +77,19 @@ namespace Lab09
                     if (programLoop && operationNumber.Equals("1"))
                     {
                         listDoMikolaja.addToPrezentyList(Scanner("Add->"));
+                        Console.Clear();
+                        listDoMikolaja.showListaPrezentow();
                     }
                     else if (programLoop && operationNumber.Equals("2"))
                     {
                         listDoMikolaja.deleteFromPrezentyList(int.Parse(Scanner("Remove->")));
+                        Console.Clear();
+                        listDoMikolaja.showListaPrezentow();
                     }
                     else if (programLoop && operationNumber.Equals("3"))
                     {
-                        listDoMikolaja.showPrezentyList();
+                        Console.Clear();
+                        listDoMikolaja.showListDoMikolaja();
                         programLoop = false;
                     }
                     else
