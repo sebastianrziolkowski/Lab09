@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Lab09
 {
@@ -7,6 +8,7 @@ namespace Lab09
     {
         string imie_nazwisko, adres, list;
         List<string> prezenty;
+
         public ListDoMikolaja(string _imie_nazwisko, string _adres, string _list)
         {
             prezenty = new List<string>();
@@ -22,36 +24,45 @@ namespace Lab09
 
         public void deleteFromPrezentyList(int number)
         {
-            if(number > 0 && number <= prezenty.Count)
+            if (number > 0 && number <= prezenty.Count)
                 prezenty.RemoveAt(number - 1);
             else Console.WriteLine("Wrong input");
         }
 
-        public void showListDoMikolaja()
+        public string getListDoMikolaja()
         {
-            Console.WriteLine("\nDo: Swiety Mikolaj");
-            Console.WriteLine("Laponia");
-
-            Console.WriteLine("\nOd: " + imie_nazwisko);
-            Console.WriteLine("Ul." + adres);
-
-            Console.WriteLine("\n" + list);
-
-            showListaPrezentow();
+            string result = "\nDo: Swiety Mikolaj\n";
+            result += "Laponia";
+            result += "\n\nOd: " + imie_nazwisko;
+            result += "\nUl." + adres;
+            result += "\n\n" + list + "\n";
+            result += getListaPrezentow();
+            return result;
         }
 
-        public void showListaPrezentow()
+        public string getListaPrezentow()
         {
+            string result = "";
             int count = 0;
             foreach (string prezent in prezenty)
             {
                 count++;
-                Console.WriteLine(count + ". " + prezent);
+                result += count + ". " + prezent + "\n";
             }
+            return result;
         }
 
+    }
         class Program
         {
+
+        public static void saveStringToFile(string input, string fileName)
+        {
+            string path = @"E:\temp\";
+            path += fileName + ".txt";
+
+            File.WriteAllText(path, input);
+        }
 
             public static string Scanner(string infoScanner)
             {
@@ -71,25 +82,32 @@ namespace Lab09
                     Console.WriteLine("\nWybierz akcje: ");
                     Console.WriteLine("1. Dodaj pozycje listy");
                     Console.WriteLine("2. Usun pozycje listy");
-                    Console.WriteLine("3. Zakoncz");
+                    Console.WriteLine("3. Zapisz w pliku");
+                    Console.WriteLine("4. Zakoncz");
 
                     string operationNumber = Scanner("->");
                     if (programLoop && operationNumber.Equals("1"))
                     {
                         listDoMikolaja.addToPrezentyList(Scanner("Add->"));
                         Console.Clear();
-                        listDoMikolaja.showListaPrezentow();
+                        Console.WriteLine(listDoMikolaja.getListaPrezentow());
                     }
                     else if (programLoop && operationNumber.Equals("2"))
                     {
                         listDoMikolaja.deleteFromPrezentyList(int.Parse(Scanner("Remove->")));
                         Console.Clear();
-                        listDoMikolaja.showListaPrezentow();
+                        Console.WriteLine(listDoMikolaja.getListaPrezentow());
                     }
                     else if (programLoop && operationNumber.Equals("3"))
                     {
+                        saveStringToFile(listDoMikolaja.getListDoMikolaja(), Scanner("File namme: "));
                         Console.Clear();
-                        listDoMikolaja.showListDoMikolaja();
+                        Console.WriteLine(listDoMikolaja.getListaPrezentow());
+                    }
+                    else if (programLoop && operationNumber.Equals("4"))
+                    {
+                        Console.Clear();
+                        Console.WriteLine(listDoMikolaja.getListDoMikolaja());
                         programLoop = false;
                     }
                     else
@@ -99,5 +117,4 @@ namespace Lab09
                 }
             }
         }
-    }
 }
